@@ -8,19 +8,17 @@
     <meta name="author" content="">
     <title>Galatta</title>
 
-	  <link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
 
-     <link href="css/bootstrap.min.css" rel="stylesheet">
-	<link href="css/style.css" rel="stylesheet">
-
-	   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-	 <script src='http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js'></script>
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src='http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js'></script>
     <script src="js/jquery.min.js"></script>
-	<script src='js/bootstrap.min.js'></script>
-	<script src='js/slide-menu.js'></script>
+    <script src='js/bootstrap.min.js'></script>
+    <script src='js/slide-menu.js'></script>
 
-	<script>
+    <script>
         $(document).ready(function() {
             // Handler for .ready() called.
 
@@ -31,23 +29,102 @@
             $('#dumb-container').hide();
             $('#quiz-container').hide();
             $('#home-link').hide();
-			$('#houses-container').hide();
-			$('#score-container').hide();
-			$('#discussion-container').hide();
-			$('#coordinators-container').hide();
-			$('#home-container').hide();
-			$('#home-container').fadeIn("slow");
+            $('#houses-container').hide();
+            $('#score-container').hide();
+            $('#discussion-container').hide();
+            $('#coordinators-container').hide();
+            $('#home-container').hide();
+            $('#home-container').fadeIn("slow");
 
         });
 
+
+        function writeEventDetails(val) {
+            console.log(val);
+            console.log("#" + val + "-dynamic-data");
+
+
+
+// fetching data from server start
+
+
+
+$.getJSON( "https://api.myjson.com/bins/3ss6e", function( data ) {
+placeData(data);
+});
+
+
+
+function placeData(obj){
+
+
+            count = 0;
+
+	    dataToDisplay='';
+
+            $.each(obj, function(key, value) {
+                console.log(value.gameName);
+
+                if (value.gameName == val) {
+                    team1 = value.team1;
+                    team2 = value.team2;
+                    player1 = value.plr1;
+                    player2 = value.plr2;
+                    timeOfEvent = value.timeOfEvent;
+                    roundName = value.roundName;
+                    count++;
+                    console.log(count);
+
+
+                    dataToDisplay += '<div class="panel panel-default"><div class="panel-heading row"><span class="col-xs-7"><span class="team1">' + team1 + '</span> vs <span class="team2">' + team2 + '</span></span><span class="col-xs-5  pull-right"><span class="matchRound">' + roundName + '</span> Round</span></div><div class="panel-body"><span class="player1">' + player1 + '</span> vs <span class="player2">' + player2 + '</span><hr><span class="timeOfmatch">' + timeOfEvent + '</span></div></div>';
+
+
+                }
+                if (count == 0) {
+                    $("#" + val + "-dynamic-data").html('<span class="alert alert-danger col-xs-12">No ongoing activity!</span>');
+                }
+                else
+                {
+                	 $("#" + val + "-dynamic-data").html(dataToDisplay);
+                }
+
+
+
+
+            });
+
+
+
+}
+
+
+
+
+// fetching data from server end
+
+
+        }
 
         function load_event(val) {
             //console.log(val.value);
             $('#home-container').fadeOut("slow");
 
             $("#" + val.id + "-container").fadeIn("slow");
-            console.log("#" + val.id + "container");
+            console.log("#" + val.id + "-container");
             $('#home-link').fadeIn("slow");
+
+            writeEventDetails(val.id);
+            console.log("done");
+        }
+
+        function load_linkdata(val) {
+            //console.log(val.value);
+            $('#home-container').fadeOut("slow");
+
+            $("#" + val.id + "-container").fadeIn("slow");
+            console.log("#" + val.id + "-container");
+            $('#home-link').fadeIn("slow");
+
             console.log("done");
         }
     </script>
@@ -67,34 +144,9 @@
             color: inherit;
         }
 
-
-.panel-default .panel-heading{
-font-size:9px;
-padding:3px 5px;
-color:#AAAAAA;
-background-color:#f5f5f5;
-
-}
-
-.panel-body{
-padding:6px;
-}
-
-
-
-.panel-default .panel-footer{
-font-size:9px;
-padding:3px 5px;
-color:yellowgreen;
-background-color:white;
-}
-
-.panelBodyHeader {
-}
-
-
-
-
+        #event-container .row {
+            margin: 0px;
+        }
     </style>
 </head>
 
@@ -111,14 +163,6 @@ background-color:white;
                 <a class="navbar-brand" href="http://galatta.tcs.com">Galatta .. yeeee</a>
             </div>
             <div id="slidemenu">
-                <!--
-                  <form class="navbar-form navbar-right" role="form">
-                    <div class="form-group">
-                      <input type="search" placeholder="search" class="form-control">
-                    </div>
-                    <button type="submit" class="btn btn-primary">Search</button>
-                  </form>
-                  -->
                 <ul class="nav navbar-nav">
                     <li>
                         <hr>
@@ -139,14 +183,6 @@ background-color:white;
                         <hr>
                         </hr>
                     </li>
-                    <!--       <li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
-                     <ul class="dropdown-menu">
-                      <li><a href="#" >Action</a></li>
-                      <li><a href="#">Action</a></li>
-                      <li><a href="#">Action</a></li>
-                     </ul>
-                     </li>
-                     -->
                 </ul>
             </div>
         </div>
@@ -155,39 +191,16 @@ background-color:white;
         <div id="home-container">
             <div class="container">
 
-
                 <div class="row">
-                    <a href="#" class="col-xs-6 well home-links" id="houses" onclick="load_event(this); return false;">HOUSES</a>
+                    <a href="#" class="col-xs-6 well home-links" id="houses" onclick="load_linkdata(this); return false;">HOUSES</a>
 
-                    <a href="#" class="col-xs-6 well home-links pull-right" id="score" onclick="load_event(this); return false;">SCORE</a>
-
-                    <!--
-				  <div class="col-xs-6 well" id="houses">
-                     HOUSES
-                  </div>
-                  <div class="col-xs-6 well pull-right" id="score">
-                     SCORE
-                  </div>
-				  -->
-
+                    <a href="#" class="col-xs-6 well home-links pull-right" id="score" onclick="load_linkdata(this); return false;">SCORE</a>
                 </div>
 
                 <div class="row">
-
-                    <a href="#" class="col-xs-6 well home-links" id="discussion" onclick="load_event(this); return false;">DISCUSSION</a>
-
-                    <a href="#" class="col-xs-6 well home-links pull-right" id="coordinators" onclick="load_event(this); return false;">COORDINATORS</a>
-
-                    <!--
-				<div class="col-xs-6 well" id="discussion">
-					DISCUSSION
-                  </div>
-                  <div class="col-xs-6 well pull-right" id="coordinators">
-                    COORDINATORS
-                  </div>
-			-->
+                    <a href="#" class="col-xs-6 well home-links" id="discussion" onclick="load_linkdata(this); return false;">DISCUSSION</a>
+                    <a href="#" class="col-xs-6 well home-links pull-right" id="coordinators" onclick="load_linkdata(this); return false;">COORDINATORS</a>
                 </div>
-
 
                 <div class="events">
                     <h3>EVENTS</h3>
@@ -203,117 +216,70 @@ background-color:white;
             </div>
         </div>
     </div>
-	<div class="container">
-		<div id="houses-container">
-                <h3>HOUSES</h3>
-                <hr>
-                <p class="text-info">Information</p>
+    <div class="container">
+        <div id="houses-container">
+            <h3>HOUSES</h3>
+            <hr>
+            <p class="text-info">Information</p>
         </div>
-	<div id="score-container">
-                <h3>SCORE</h3>
-                <hr>
-                <p class="text-info">Information</p>
+        <div id="score-container">
+            <h3>SCORE</h3>
+            <hr>
+            <p class="text-info">Information</p>
         </div>
-	<div id="discussion-container">
-                <h3>DISCUSSION</h3>
-                <hr>
-                <p class="text-info">Information</p>
+        <div id="discussion-container">
+            <h3>DISCUSSION</h3>
+            <hr>
+            <p class="text-info">Information</p>
         </div>
-		<div id="coordinators-container">
-                <h3>COORDINATORS</h3>
-                <hr>
-                <p class="text-info">Information</p>
+        <div id="coordinators-container">
+            <h3>COORDINATORS</h3>
+            <hr>
+            <p class="text-info">Information</p>
         </div>
-	</div>
+    </div>
 
     <div id="event-container">
         <div class="container">
             <div id="badminton-container">
                 <h3>Badminton</h3>
                 <hr>
-
-
-
-
-  <div class="panel panel-default">
-    <div class="panel-heading">Thu 2015.07.31 at 06:02</div>
-    <div class="panel-body">
-    Guy 1 vs Guy 2<br>
-    PS vs RS
-    </div>
-    <div class="panel-footer">Round 4</div>
-  </div>
-<br>
-
-
-
-  <div class="panel panel-default">
-    <div class="panel-heading">Thu 2015.07.30 at 06:02</div>
-    <div class="panel-body">
-    Guy 1 vs Guy 2<br>
-    PS vs RS
-    </div>
-    <div class="panel-footer">Round 3</div>
-  </div>
-<br>
-
-
-  <div class="panel panel-default">
-    <div class="panel-heading">Thu 2015.07.30 at 05:02</div>
-    <div class="panel-body">
-    Guy 1 vs Guy 2<br>
-    PS vs RS
-    </div>
-    <div class="panel-footer">Round 2</div>
-  </div>
-<br>
-
-  <div class="panel panel-default">
-    <div class="panel-heading">Thu 2015.07.30 at 04:02</div>
-    <div class="panel-body">
-    Guy 1 vs Guy 2<br>
-    PS vs RS
-
-    </div>
-    <div class="panel-footer">Round 1</div>
-  </div>
-<br>
-
-
-
-
-
-
-
-
-
-
-
+                <div id="badminton-dynamic-data">
+                </div>
             </div>
             <div id="chess-container">
                 <h3>Chess</h3>
                 <hr>
-                <p class="text-info">Information</p>
+                <div id="chess-dynamic-data">
+                </div>
             </div>
+
             <div id="carrom-container">
                 <h3>Carrom</h3>
                 <hr>
-                <p class="text-info">Information</p>
+                <div id="carrom-dynamic-data">
+                </div>
             </div>
+
             <div id="cricket-container">
                 <h3>Cricket</h3>
                 <hr>
-                <p class="text-info">Information</p>
+                <div id="cricket-dynamic-data">
+                </div>
             </div>
+
             <div id="quiz-container">
                 <h3>Quiz</h3>
                 <hr>
-                <p class="text-info">Information</p>
+                <div id="quiz-dynamic-data">
+                </div>
             </div>
+
             <div id="dumb-container">
                 <h3>Dumb Charades</h3>
                 <hr>
-                <p class="text-info">Information</p>
+                <div id="dumb-dynamic-data">
+                </div>
             </div>
             <div id="home-link">
                 <br>
